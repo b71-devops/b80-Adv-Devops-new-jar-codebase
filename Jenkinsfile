@@ -19,6 +19,11 @@ environment {
             steps {
                 sh 'mvn test'
             }
-        }        
+        } 
+        stage("CODE-BUILD") {
+            steps {
+                sh 'mvn install'
+            }
+        }                
     }
 }
