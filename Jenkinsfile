@@ -12,7 +12,7 @@ environment {
     stages {
         stage("CODE-BUILD") {
             steps {
-                sh 'mvn clean install'
+                sh 'mvn clean'
             }
         }
     }
