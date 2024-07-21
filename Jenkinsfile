@@ -10,10 +10,15 @@ environment {
 }
 
     stages {
-        stage("CODE-BUILD") {
+        stage("CODE-CLEANUP") {
             steps {
                 sh 'mvn clean'
             }
         }
+        stage("CODE-TEST") {
+            steps {
+                sh 'mvn test'
+            }
+        }        
     }
 }
