@@ -24,6 +24,16 @@ environment {
             steps {
                 sh 'mvn install'
             }
-        }                
+        }  
+        stage("SONARQUBE-ANALYSIS") {
+            environment {
+                scannerHome = tool 'b80-sonarqube-scanner'
+            }
+            steps {
+                withSonarQubeEnv('sonarqube-cloud-server') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }                       
     }
 }
