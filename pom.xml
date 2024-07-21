@@ -14,6 +14,11 @@
   <properties>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.login>5a008ede20fd0242af114811577ab8740de490c8</sonar.login>
+    <sonar.organization>b80-sonaqube-org-key</sonar.organization>
+    <sonar.projectKey>b80-sonaqube-org-key_sonarqube-b80-adv-devops-war-codebase</sonar.projectKey>
+    <jacoco.version>0.8.7</jacoco.version> <!-- Specify the JaCoCo version -->
   </properties>
 
   <modules>
@@ -46,7 +51,33 @@
         </configuration>
       </plugin>
 
-        </plugins>
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.7.0.1746</version>
+      </plugin>
+
+      <!-- JaCoCo plugin configuration -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
 
     <pluginManagement>
       <plugins>
@@ -79,8 +110,6 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>2.4</version>
         </plugin>
-
-      
 
         <plugin>
           <artifactId>maven-surefire-report-plugin</artifactId>
@@ -156,7 +185,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
 
   <prerequisites>
     <maven>3.0.3</maven>
