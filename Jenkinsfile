@@ -15,9 +15,9 @@ environment {
                 sh 'mvn clean'
             }
         }
-        stage("CODE-TEST") {
+        stage("CODE-Integration-TEST") {
             steps {
-                sh 'mvn test'
+                sh 'mvn surefire-report:report'
             }
         } 
         stage("CODE-BUILD") {
