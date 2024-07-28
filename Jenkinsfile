@@ -1,3 +1,5 @@
+def registry = 'https://b80AdvancedDevops.jfrog.io'
+
 pipeline {
     agent {
         node {
@@ -10,22 +12,17 @@ environment {
 }
 
     stages {
-        stage("CODE-CLEANUP") {
+        stage("BUILD") {
             steps {
-                sh 'mvn clean'
+                sh 'mvn clean deploy -Dmaven.test.skip=true'
             }
         }
-        stage("CODE-Integration-TEST") {
+        stage("TEST") {
             steps {
                 sh 'mvn surefire-report:report'
             }
         } 
-        stage("CODE-BUILD") {
-            steps {
-                sh 'mvn install'
-            }
-        }  
-        stage("SONARQUBE-ANALYSIS") {
+        stage("Sonar-Analysis") {
             environment {
                 scannerHome = tool 'b80-sonarqube-scanner'
             }
@@ -35,7 +32,7 @@ environment {
                 }
             }
         }
-        stage("SONAR-QualityGate") {
+        stage("Quality Gate") {
             steps {
                 script {
                     timeout(time: 1, unit: 'HOURS') {
@@ -44,6 +41,31 @@ environment {
                             error "Pipeline aborted due to quality gate failure: ${qg.status}"
                         }
                     }
+                }
+            }
+        }
+        stage("JAR Publish") {
+            steps {
+                script {
+                    echo '--------JAR Publish Started--------'
+                     def server = Artifactory.newServer url:registry+"/artifactory" ,  credentialsId:"b80-jfog-jenkins-token"
+                     def properties = "buildid=${env.BUILD_ID},commitid=${GIT_COMMIT}";
+                     def uploadSpec = """{
+                          "files": [
+                            {
+                              "pattern": "jarstaging/(*)",
+                              "target": "b80-maven-jfrog-repo-libs-release-local/{1}",
+                              "flat": "false",
+                              "props" : "${properties}",
+                              "exclusions": [ "*.sha1", "*.md5"]
+                            }
+                         ]
+                     }"""
+                     def buildInfo = server.upload(uploadSpec)
+                     buildInfo.env.collect()
+                     server.publishBuildInfo(buildInfo)
+                     echo '--------JAR Publish Completed--------'  
+
                 }
             }
         }                      
