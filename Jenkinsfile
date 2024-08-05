@@ -1,4 +1,6 @@
 def registry = 'https://b80AdvancedDevops.jfrog.io'
+def imageName = 'https://b80advanceddevops.jfrog.io/artifactory/b80-docker-local/b80-image'
+def version = '2.1.2'
 
 pipeline {
     agent {
@@ -69,5 +71,14 @@ environment {
                 }
             }
         }                      
+    }
+    stage("Docker-BUILD") {
+        steps {
+            script {
+                echo '***docker build started***'
+                app = docker.build(imageName+":"+version)
+                echo '***docker versioned image built***'
+            }
+        }
     }
 }
