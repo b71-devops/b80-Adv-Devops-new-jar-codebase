@@ -70,15 +70,15 @@ environment {
 
                 }
             }
-        }                      
-    }
-    stage("Docker-BUILD") {
-        steps {
-            script {
-                echo '***docker build started***'
-                app = docker.build(imageName+":"+version)
-                echo '***docker versioned image built***'
+        } 
+        stage("Docker-BUILD") {
+            steps {
+                script {
+                    echo '***docker build started***'
+                    app = docker.build(imageName+":"+version)
+                    echo '***docker versioned image built***'
+                }
             }
-        }
+        }                     
     }
 }
