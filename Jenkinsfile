@@ -79,6 +79,17 @@ environment {
                     echo '***docker versioned image built***'
                 }
             }
-        }                     
+        }
+        stage("Docker-PUBLISH") {
+            steps {
+                script {
+                    echo '***docker image publish started***'
+                    docker.withRegistry(registry, 'b80-jfog-jenkins-token') {
+                        app.push()
+                    }
+                    echo '***docker image published successfully***'
+                }
+            }
+        }                    
     }
 }
