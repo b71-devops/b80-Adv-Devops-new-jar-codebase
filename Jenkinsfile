@@ -1,5 +1,6 @@
 def registry = 'https://b80AdvancedDevops.jfrog.io'
-def imageName = 'b80advanceddevops.jfrog.io/b80-docker-local/b80'
+//def imageName = 'b80advanceddevops.jfrog.io/b80-docker-local/b80'
+def imageName = 'b80-docker-local/b80'
 def version = '2.1.2'
 
 pipeline {
