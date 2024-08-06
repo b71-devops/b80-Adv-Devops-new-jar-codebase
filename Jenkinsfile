@@ -1,7 +1,7 @@
 def registry = 'https://b80AdvancedDevops.jfrog.io'
 //def imageName = 'b80advanceddevops.jfrog.io/b80-docker-local/b80'
 def imageName = 'b80-docker-local/b80'
-def version = '2.1.3'
+def version = '2.1.4'
 
 pipeline {
     agent {
@@ -91,6 +91,14 @@ environment {
                     echo '***docker image published successfully***'
                 }
             }
-        }                    
+        }
+        stage("Image-CleanUp") {
+            steps {
+                script {
+                    echo 'Cleaning up old Docker images...'
+                    sh 'docker system prune -af'
+                }
+            }
+        }
     }
 }
